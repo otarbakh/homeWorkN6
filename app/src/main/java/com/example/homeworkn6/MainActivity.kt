@@ -1,5 +1,6 @@
 package com.example.homeworkn6
 
+import android.annotation.SuppressLint
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -7,16 +8,10 @@ import android.widget.Toast
 import com.example.homeworkn6.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
-
-    private val email = mutableListOf<String>()
-    private val deletedUsers = mutableListOf<String>()
-    private val mapOfUsers = mutableMapOf<String, com.example.homeworkn6.UserData>()
-
-
     private lateinit var binding: ActivityMainBinding
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -31,38 +26,41 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private val email = mutableListOf<String>()
+    private val deletedUsers = mutableListOf<String>()
+    private val mapOfUsers = mutableMapOf<String, com.example.homeworkn6.UserData>()
 
+    @SuppressLint("SetTextI18n")
     private fun userDataCheck() {
-
         val mail = binding.edEmail.text.toString()
         val firstName = binding.edEmail.text.toString()
         val lastName = binding.edEmail.text.toString()
         val age = binding.edEmail.text.toString()
         val userUpdate = UserData(firstName, lastName, mail, age)
 
-
-        if (email.contains("$mail")) {
+        if (email.contains(mail)) {
             binding.tvInfo.text = "Error, user $mail already exists"
             binding.tvInfo.setTextColor(Color.RED)
-        } else if (!mail.isNullOrEmpty()) {
+        } else if (mail.isNotEmpty()) {
             email.add(mail)
             mapOfUsers[mail] = userUpdate
             binding.tvInfo.setTextColor(Color.GREEN)
             binding.tvInfo.text = "$mail added"
             binding.tvTotalAcc.text = "Active Users: ${email.size}"
         } else {
-            binding.tvInfo.text = "Error"
+            binding.tvInfo.text = "Something went wrong !"
             binding.tvInfo.setTextColor(Color.RED)
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun removeUser() {
         val mail = binding.edEmail.text.toString()
-        if (email.contains("$mail")) {
-            email.remove(mail.toString())
+        if (email.contains(mail)) {
+            email.remove(mail)
             binding.tvInfo.text = "user $mail removed"
             binding.tvInfo.setTextColor(Color.GREEN)
-            deletedUsers.add(mail.toString())
+            deletedUsers.add(mail)
             binding.tvDelete.text = "Deleted Users: ${deletedUsers.size}"
             binding.tvTotalAcc.text = "Active Users: ${email.size}"
         } else {
@@ -78,9 +76,9 @@ class MainActivity : AppCompatActivity() {
         val age = binding.edAge.text.toString()
 
         if (mapOfUsers.containsKey(email)) {
-            mapOfUsers[email]!!.firstName = firstName
-            mapOfUsers[email]!!.lastName = lastName
-            mapOfUsers[email]!!.age = age
+            mapOfUsers[email]?.firstName = firstName
+            mapOfUsers[email]?.lastName = lastName
+            mapOfUsers[email]?.age = age
             Toast.makeText(this, "User Info Updated Successfully !", Toast.LENGTH_SHORT).show()
         } else {
             Toast.makeText(this, "User doesn't exist !", Toast.LENGTH_SHORT).show()
