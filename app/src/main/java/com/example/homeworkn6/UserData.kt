@@ -1,8 +1,8 @@
 package com.example.homeworkn6
 
-data class UserDataDetails(
-    val firstName: String,
-    val lastName: String,
+data class UserData(
+    var firstName: String,
+    var lastName: String,
     val email: String,
-    val age: Int
+    var age: String
 )
